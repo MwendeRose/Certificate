@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHOFCO SACCO Certificate</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif;}
+body { background: #f0f2f5; padding: 20px;}
+.container { max-width: 1200px; margin: auto; }
+.certificate { 
+    position:relative; 
+    background:#fff; 
+    width:100%; 
+    height:600px; 
+    padding:40px 60px; 
+    border:12px double #004b8d; 
+    box-shadow:0 4px 15px rgba(0,0,0,0.2); 
+    overflow:hidden;
+    margin: 0 auto;
+}
+.certificate .logo { display:block; margin:0 auto 15px auto; width:360px; }
+.certificate .title { text-align:center; font-size:42px; font-weight:bold; margin-top:10px; color:#0097e6; }
+.certificate .recipient { text-align:center; font-size:32px; margin:15px 0; font-weight:bold; text-decoration:underline; }
+.certificate .body-text, .certificate .sub-text { text-align:center; margin:5px 0; font-size:22px;}
+.signatures-container { display:flex; justify-content:space-around; position:absolute; bottom:60px; width:100%; }
+.sig-block img { width:120px; }
+.sig-line { height:2px; background:#000; width:180px; margin:5px auto;}
+.qr-box { position:absolute; top:30px; right:30px; text-align:center;}
+.qr-box canvas { width:120px !important; height:120px !important;}
+.serial { position:absolute; top:20px; left:30px; font-weight:bold; font-size:18px; }
+.seal { position:absolute; bottom:40px; left:50%; transform:translateX(-50%); }
+.seal img { width:100px; }
+.print-section { text-align: center; margin-top: 20px; }
+.print-btn { 
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+.print-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);}
+
+#verification-panel {
+    margin-top: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+#verification-panel input { 
+    width: 100%; 
+    padding: 8px; 
+    margin-top: 5px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+}
+#verification-result { 
+    margin-top: 15px; 
+    background: #f9f9f9; 
+    padding: 15px; 
+    border-radius: 8px; 
+}
+#send-email-btn { 
+    background: #2575fc; 
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#send-email-btn:hover { background: #6a11cb; }
+
+@media print {
+  body * { visibility: hidden; }
+  .certificate, .certificate * { visibility: visible; }
+  .certificate { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%;
+      margin: 0;
+      padding: 40px 60px;
+      box-shadow: none;
+      border: 12px double #004b8d;
+  }
+  .print-section { display: none; }
+  #verification-panel { display: none; }
+  @page { size: A4 landscape; margin: 0; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="certificate">
+        <div class="serial" id="cert-serial">SK00001</div>
+        <img src="https://i.ibb.co/fdqFk4z3/shofco-sacco-Logo-Official-transparent.png" class="logo" alt="SHOFCO SACCO Logo">
+        <div class="qr-box">
+            <canvas id="qr-code"></canvas>
+            <div style="font-size:12px;color:#555;">Scan to Verify</div>
+        </div>
+        <div class="title">Certificate of Merit</div>
+        <div class="body-text">issued to</div>
+        <div class="recipient" id="cert-recipient">Amina Hamisi</div>
+        <div class="body-text">for Successfully completing</div>
+        <div class="sub-text">The Financial Literacy Curriculum Training</div>
+        <div class="sub-text">Completed on: <span id="cert-date">2024-01-15</span></div>
+
+        <div class="signatures-container">
+            <div class="sig-block">
+                <img src="https://i.ibb.co/BHMzLd3X/output-onlinepngtools.png">
+                <div class="sig-line"></div>
+                <strong>Kennedy Odede</strong><br>Chairman
+            </div>
+            <div class="sig-block">
+                <img src="https://i.ibb.co/BHMzLd3X/output-onlinepngtools.png">
+                <div class="sig-line"></div>
+                <strong>Victor Owiti</strong><br>General Manager
+            </div>
+        </div>
+
+        <div class="seal">
+            <img src="https://i.ibb.co/v4xYRKY6/Seal.jpg" alt="Seal">
+        </div>
+    </div>
+
+    <div class="print-section">
+        <button class="print-btn" onclick="window.print()">Print Certificate</button>
+    </div>
+
+    <div id="verification-panel">
+        <h3>Certificate Verification</h3>
+        <p>This certificate has been issued to <strong>John Doe</strong> (Certificate #: SK00001) for completing the Financial Literacy Curriculum Training on January 15, 2024.</p>
+        
+        <div id="verification-result">
+            <p><strong>Recipient:</strong> <span id="v-recipient">John Doe</span></p>
+            <p><strong>Certificate Number:</strong> <span id="v-certno">SK00001</span></p>
+            <p><strong>Date of Completion:</strong> <span id="v-date">2024-01-15</span></p>
+            <p><strong>Email:</strong> <span id="v-email">john.doe@example.com</span></p>
+            <p><strong>Issued by:</strong> SHOFCO SACCO</p>
+            
+            <label>Send Certificate to Email:</label>
+            <input type="email" id="email-input" placeholder="Enter email to send certificate">
+            <button id="send-email-btn">Send Email</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const certData = {
+    name: "Amina Hamisi",
+    certNo: "SK00001",
+    date: "2024-01-15",
+    email: "john.doe@example.com"
+};
+
+
+document.getElementById("cert-recipient").textContent = certData.name;
+document.getElementById("cert-serial").textContent = certData.certNo;
+document.getElementById("cert-date").textContent = certData.date;
+
+
+document.getElementById("v-recipient").textContent = certData.name;
+document.getElementById("v-certno").textContent = certData.certNo;
+document.getElementById("v-date").textContent = certData.date;
+document.getElementById("v-email").textContent = certData.email;
+
+
+const qrText = 
+`SHOFCO SACCO Certificate
+Recipient: ${certData.name}
+Certificate Number: ${certData.certNo}
+Date of Completion: ${certData.date}
+Email: ${certData.email}
+Verify: Issued by SHOFCO SACCO`;
+
+new QRious({ 
+    element: document.getElementById("qr-code"), 
+    size: 180,
+    value: qrText
+});
+
+// Email sending function
+document.getElementById("send-email-btn").onclick = () => {
+    const email = document.getElementById("email-input").value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if(!emailRegex.test(email)){
+        alert("Please enter a valid email address!");
+        return;
+    }
+    alert(`Certificate has been sent to ${email}`);
+    document.getElementById("email-input").value = "";
+};
+</script>
+</body>
+</html>
